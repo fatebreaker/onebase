@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+logs/
+results/*
+!results/pdl_k2.jsonl
+!results/pdl_k2_h200.jsonl
+!results/pdl_fp4.jsonl
+!results/w16_swap.jsonl

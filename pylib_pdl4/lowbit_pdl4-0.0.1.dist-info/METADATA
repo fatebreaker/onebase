@@ -1,0 +1,4 @@
+Metadata-Version: 2.1
+Name: lowbit-pdl4
+Version: 0.0.1
+Summary: opt-in NVFP4 PDL decode path (BLACKWELL-PDL-E2E) for the lowbit-lora plugin on Blackwell sm_120 (research code; found on PYTHONPATH only for opted-in engines)

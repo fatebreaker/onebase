@@ -1,0 +1,2 @@
+[vllm.general_plugins]
+lowbit_swap = lowbit_lora.hopper_swap:install

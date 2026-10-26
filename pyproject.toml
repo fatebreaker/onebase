@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "onebase"
+version = "0.1.0"
+description = "OneBase: multi-tenant LoRA kernels on low-precision (FP8/NVFP4) bases, as a vLLM plugin, and a LoRA RL trainer on the same base"
+readme = "README.md"
+requires-python = ">=3.10"
+# Not pinned here, so that installing OneBase never replaces an existing vLLM/PyTorch build; tested versions are in the README.
+dependencies = []
+
+[project.entry-points."vllm.general_plugins"]
+# Loaded by every vLLM process; does nothing unless LOWBIT_FUSED=1. The decode path (LOWBIT_PDL=1) and the other opt-in
+# variants register through the pylib_* directories (see the README).
+lowbit_fused = "lowbit_lora.plugin:install"
+
+[tool.setuptools.packages.find]
+include = ["lowbit_lora*", "mlsys*"]

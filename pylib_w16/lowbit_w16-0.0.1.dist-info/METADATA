@@ -1,0 +1,4 @@
+Metadata-Version: 2.1
+Name: lowbit-w16
+Version: 0.0.1
+Summary: opt-in matched W8A16 engine (lowbit_lora/w16_engine.py) inside vllm serve, CO-SERVE-MATCHED (research code; found on PYTHONPATH only for opted-in servers)

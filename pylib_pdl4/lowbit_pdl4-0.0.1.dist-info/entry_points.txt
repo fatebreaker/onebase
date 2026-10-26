@@ -1,0 +1,2 @@
+[vllm.general_plugins]
+lowbit_pdl4 = lowbit_lora.blackwell_pdl_plugin:install

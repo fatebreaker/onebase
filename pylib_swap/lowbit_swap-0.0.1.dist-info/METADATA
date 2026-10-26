@@ -1,0 +1,4 @@
+Metadata-Version: 2.1
+Name: lowbit-swap
+Version: 0.0.1
+Summary: opt-in swap-AB K2 for the lowbit-lora plugin on Hopper (research code; found on PYTHONPATH only for opted-in engines)

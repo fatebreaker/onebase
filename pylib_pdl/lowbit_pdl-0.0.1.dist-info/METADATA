@@ -1,0 +1,4 @@
+Metadata-Version: 2.1
+Name: lowbit-pdl
+Version: 0.0.1
+Summary: opt-in PDL decode path (HOPPER-PDL-E2E) for the lowbit-lora plugin on Hopper (research code; found on PYTHONPATH only for opted-in engines)
