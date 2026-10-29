@@ -7,6 +7,8 @@ the tie then goes to even, so ~1% of elements land one e4m3 step away from vLLM'
 alone made our GEMM disagree with vLLM's FP8 path end to end. Inputs must already be clamped to +-448.
 RN=False keeps Triton's conversion (the CPU interpreter cannot run inline PTX).
 """
+import os
+
 import triton
 import triton.language as tl
 
@@ -48,6 +50,18 @@ def shrink_choice(M: int, R: int, split_k: int, cc_major: int) -> tuple[dict, in
         # 2-stage tiles took 1.2-1.6x the best tile's time at 128-1024 tokens)
         if M <= 512:
             return dict(BLOCK_M=16, BLOCK_SR=sr, BLOCK_K=128, num_warps=4, num_stages=3), max(1, split_k // 2)
+        if cc_major == 9 and os.environ.get("LOWBIT_SHRINK_LARGE", "0") not in ("0", "", "false", "False"):
+            # Large-batch tiles (opt-in, off by default): bench/tune_shrink.py on Qwen3-8B's projections (Qwen3.5-9B's
+            # dense shapes), rank 64, on the H200 (sm_90 with the H100's 132 SMs): per weight width and batch size the
+            # tile with the least summed hybrid-path time over the projections. The layer took 0.98x / 0.94x / 0.92x
+            # the stock path's time at 1,024 / 2,048 / 4,096 tokens with these tiles, against 1.08x / 1.03x / 1.01x
+            # with the default tiles below (the down projection 1.21-1.24x stock). split_k >= 16 marks K >= 8192
+            # (the down projection).
+            if split_k >= 16:
+                bk, sp = (128, 8) if M <= 1024 else (256, 4) if M <= 2048 else (256, 2)
+            else:
+                bk, sp = 128, (2 if M <= 2048 else 1)
+            return dict(BLOCK_M=32, BLOCK_SR=sr, BLOCK_K=bk, num_warps=4, num_stages=3), min(split_k, sp)
         if M <= 2048:
             # split K up to 2048 tokens too (r64, bf16 and NVFP4-stored adapters; worst regret over projections and
             # formats): Blackwell, RTX PRO 6000 slice (job 65495078), 32-row tiles, 1.06 at 1024 tokens against 1.45 for

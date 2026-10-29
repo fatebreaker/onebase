@@ -88,7 +88,8 @@ Main switches (all off unless stated):
 | `LOWBIT_WARMUP=0` | skip the kernel precompilation at load (not for serving) |
 
 Further opt-in variants used in our experiments: `LOWBIT_STOCK_ABOVE=<M>` and `LOWBIT_NOHYB_ABOVE=<M>` (restrict the
-dispatch above a batch size), `LOWBIT_PDL_FORCE=1` (always take the decode path where it is a candidate), `LOWBIT_SWAP=1`
+dispatch above a batch size), `LOWBIT_SHRINK_LARGE=1` (Hopper: tiles of the adapter's down-projection searched for large
+batches, for prefill steps outside CUDA graphs), `LOWBIT_PDL_FORCE=1` (always take the decode path where it is a candidate), `LOWBIT_SWAP=1`
 with `pylib_swap` (a swap-AB GEMM path on Hopper), and `LOWBIT_W16_ENGINE=1` with `pylib_w16` (the matched W8A16 engine in
 `vllm serve`).
 
