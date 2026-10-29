@@ -44,11 +44,9 @@ H100, H200 and GH200 GPUs, and with 32 tenants OneBase delivers 1.05–1.09× vL
 
 ## Installation
 
-Install into the Python environment that runs vLLM:
+From the repository's root directory, install into the Python environment that runs vLLM:
 
 ```bash
-git clone https://github.com/fatebreaker/onebase.git
-cd onebase
 pip install -e . --no-deps
 ```
 
